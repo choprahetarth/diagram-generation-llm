@@ -1,0 +1,10 @@
+// image
+digraph {
+	A [label=Sunlight]
+	B [label=Chlorophyll]
+	C [label=Photosynthesis]
+	D [label="Glucose and Oxygen"]
+	A -> B [label=Absorption]
+	B -> C [label=Conversion]
+	C -> D [label=Production]
+}
