@@ -14,6 +14,7 @@ def runner_code(question, answer, temperature=0):
         input_variables = ['question', 'answer'], 
         template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one, which can be drawn by the python library of graphviz. Do not provide any other context."""
     )
+    
 
     code_generator = PromptTemplate(
         input_variables = ['context_generated'], 
