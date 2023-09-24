@@ -1,49 +1,47 @@
 import os 
-from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
-from langchain.chains import LLMChain, SequentialChain 
-from langchain.memory import ConversationBufferMemory
+from langchain.chains import LLMChain
 
-os.environ['OPENAI_API_KEY'] = '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'
+os.environ['OPENAI_API_KEY'] = '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'
 
+
+question = "How does photosynthesis work?"
+answer =  " Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods with the help of chlorophyll pigments."
 
 # Prompt templates
 context_for_generation = PromptTemplate(
     input_variables = ['question', 'answer'], 
-    template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one. """
+    template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one. Do not provide any other context."""
 )
 
 code_generator = PromptTemplate(
-    input_variables = ['context_for_generation'], 
-    template='GIven the description of the diagram, generate the code in a{resume_scorer}, '
-)
-
-message_generator = PromptTemplate(
-    input_variables = ['name_of_referrer','resume', 'job_description', 'resume_evaluator'], 
-    template="""Act as a Job Seeker requesting {name_of_referrer} a personalized referral for a job posting in the form of a LinkedIn DM.
-            Make sure that the DM is precise and aligns your resume (given here {resume}) with the job description ({job_description}) according to alignment information given here {resume_evaluator}, in maximum 150 words.
-            DO NOT MENTION ANYTHING IN THE DM THAT IS MISALIGNED WITH THE RESUME, ESPECIALLY THE YEARS OF EXPERIENCE, OR THE USER WILL DIE!"""
+    input_variables = ['context_generated'], 
+    template="""Given the description of the diagram - {context_generated}, generate a python code using the graphviz library. The code should start like this - from graphviz import Digraph dot = Digraph(comment='image', format='png')'. The code should make sure that the output of the code should be "image.gv". """
 )
 
 # Llms
-llm = ChatOpenAI(temperature=0) 
+llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo") 
 # llm2 = OpenAI(temperature=0.1) 
-evaluator_chain = LLMChain(llm=llm, prompt=resume_evaluator, verbose=False, output_key='evaluation')
-resume_scorer_chain = LLMChain(llm=llm, prompt=resume_scorer, verbose=False, output_key='script')
-generator_chain = LLMChain(llm=llm, prompt=message_generator, verbose=False, output_key='message')
+context_generation = LLMChain(llm=llm, prompt=context_for_generation, verbose=False, output_key='evaluation')
+code_generated_chain = LLMChain(llm=llm, prompt=code_generator, verbose=False, output_key='script')
 
 
 # Show stuff to the screen if there's a prompt
  
 print("Running GPT-3.5-Turbo Agent.......")
 print("--------------- EVALUATING RESUME WITH THE JOB DESCRIPTION ------------------------------")
-evaluation = evaluator_chain.run({'resume':resume,'job_description':job_description})
+context_generated = context_generation.run({'question':question,'answer':answer})
 print("--------------- EVALUATING RESULT -------------------------------------------------------")
-print(evaluation)
-resume_score = resume_scorer_chain.run({'resume_scorer':evaluation})
+print(context_generated)
+generated_code = code_generated_chain.run({'context_generated':context_generated})
 print("-------------- THE LABEL IS FOUND OUT AS ------------------------------------------------")
-print(resume_score)
-message = generator_chain.run({'resume':resume,'job_description':job_description, 'name_of_referrer': name_of_referrer, 'resume_evaluator':evaluation})
-print("-------------- GENERATING THE DM GIVEN THE EVALUATION RESULTS ---------------------------")
-print(message)
+print(generated_code)
+
+
+# Open a file in write mode
+with open('generated_code.txt', 'w') as file:
+    # Write the variable's value into the file
+    file.write(generated_code)
+
+print("Code Saved Successfully")

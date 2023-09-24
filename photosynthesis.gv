@@ -1,0 +1,28 @@
+// Photosynthesis Process
+digraph {
+	A [label=Sunlight]
+	B [label=Chlorophyll]
+	C [label=H2O]
+	D [label="Electron Transport Chain"]
+	E [label="ATP/NADPH"]
+	A -> B
+	B -> C
+	C -> D
+	D -> E
+	A -> B [label="Absorbed by chlorophyll"]
+	B -> C [label="Split into O2, H+, e-"]
+	C -> D [label="Electrons move through"]
+	D -> E [label="Generates ATP and NADPH"]
+	F [label=RuBisCO]
+	G [label=CO2]
+	H [label="C6H12O6 / Organic Compounds"]
+	I [label=Starch]
+	E -> F
+	F -> G
+	G -> H
+	H -> I
+	E -> F [label="Used by RuBisCO" color=blue]
+	F -> G [label="Fixes CO2" color=blue]
+	G -> H [label="Produces Glucose & others" color=blue]
+	H -> I [label="Stored as Starch" color=blue]
+}
