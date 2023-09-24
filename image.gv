@@ -1,10 +1,10 @@
 // image
 digraph {
-	A [label=Sunlight]
-	B [label=Chlorophyll]
-	C [label=Photosynthesis]
-	D [label="Glucose and Oxygen"]
-	A -> B [label=Absorption]
-	B -> C [label=Conversion]
-	C -> D [label=Production]
+	A [label="Producers (Plants)"]
+	B [label="Primary Consumers"]
+	C [label="Secondary Consumers"]
+	D [label="Tertiary Consumers"]
+	A -> B
+	B -> C
+	C -> D
 }
