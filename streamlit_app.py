@@ -1,4 +1,5 @@
 import os 
+import time
 from PIL import Image
 import streamlit as st
 from main import runner_code
@@ -15,5 +16,6 @@ os.environ['OPENAI_API_KEY'] = str(input3)
 
 if st.button("Compute!"):
     runner_code(input1, input2, input4)
-    image = Image.open('image.gv.png')
+    time.sleep(2)
+    image = Image.open('./image.gv.png')
     st.image(image, caption='Diagram')

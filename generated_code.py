@@ -2,38 +2,54 @@ from graphviz import Digraph
 
 dot = Digraph(comment='image', format='png')
 
-# Step 1
-dot.node('line', shape='plaintext', label='')
+# Step 1: Draw the sun
+dot.node('sun', shape='circle', label='Sun')
 
-# Step 2
-dot.node('sun', shape='circle', label='Sun/Plant')
 
-# Step 3
-dot.node('herbivore', shape='circle', label='Herbivore')
+# Step 2: Draw rays extending from the sun
+for i in range(4):
+    dot.node(f'ray{i}', shape='point')
+    dot.edge('sun', f'ray{i}')
 
-# Step 4
-dot.edge('sun', 'herbivore')
 
-# Step 5
-dot.node('carnivore', shape='circle', label='Carnivore')
+# Step 3: Draw the ground
+dot.node('ground', shape='rectangle', label='Ground')
 
-# Step 6
-dot.edge('herbivore', 'carnivore')
 
-# Step 7
-dot.node('consumer', shape='circle', label='Consumer')
-dot.edge('carnivore', 'consumer')
+# Step 4: Draw the stem
+dot.node('stem', shape='point')
+dot.edge('ground', 'stem')
 
-# Step 8
-dot.node('top_predator', shape='circle', label='Top Predator')
-dot.edge('consumer', 'top_predator')
 
-# Step 9
-dot.node('omnivore', shape='circle', label='Omnivore')
-dot.edge('herbivore', 'omnivore')
+# Step 5: Draw the leaf
+dot.node('leaf', shape='oval', label='Leaf')
+dot.edge('stem', 'leaf')
 
-# Step 10
-dot.node('title', shape='plaintext', label='Food Chain')
-dot.edge('title', 'sun')
+
+# Step 6: Draw chloroplasts inside the leaf
+
+for i in range(3):
+    dot.node(f'chloroplast{i}', shape='circle', label='Chloroplast')
+    dot.edge('leaf', f'chloroplast{i}')
+
+
+# Step 7: Connect chloroplasts with curved lines
+
+for i in range(2):
+    dot.edge(f'chloroplast{i}', f'chloroplast{i+1}', style='dashed')
+
+
+# Step 8: Label chloroplasts as "chlorophyll pigments"
+
+for i in range(3):
+    dot.node(f'chlorophyll{i}', label='Chlorophyll\nPigment')
+    dot.edge(f'chloroplast{i}', f'chlorophyll{i}')
+
+
+# Step 9: Draw arrows from the sun to the leaf
+
+for i in range(4):
+    dot.edge(f'ray{i}', 'leaf', arrowhead='vee')
+
 
 dot.render('image.gv')

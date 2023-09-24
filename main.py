@@ -12,7 +12,7 @@ def runner_code(question, answer, temperature=0):
     # Prompt templates
     context_for_generation = PromptTemplate(
         input_variables = ['question', 'answer'], 
-        template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one. Do not provide any other context."""
+        template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one, which can be drawn by the python library of graphviz. Do not provide any other context."""
     )
 
     code_generator = PromptTemplate(
@@ -21,20 +21,19 @@ def runner_code(question, answer, temperature=0):
     )
 
     # LLM's
-    llm = ChatOpenAI(temperature=temperature, model_name="gpt-3.5-turbo") 
-    # llm2 = OpenAI(temperature=0.1) 
+    llm = ChatOpenAI(temperature=temperature, model_name="gpt-4") 
     context_generation = LLMChain(llm=llm, prompt=context_for_generation, verbose=False, output_key='evaluation')
     code_generated_chain = LLMChain(llm=llm, prompt=code_generator, verbose=False, output_key='script')
 
 
     # Show stuff to the screen if there's a prompt
-    print("Running GPT-3.5-Turbo Agent.......")
-    print("--------------- EVALUATING RESUME WITH THE JOB DESCRIPTION ------------------------------")
+    print("Running GPT-4 Agent.......")
+    print("--------------- GENERATING DESCRIPTION ---------------------------------")
     context_generated = context_generation.run({'question':question,'answer':answer})
-    print("--------------- EVALUATING RESULT -------------------------------------------------------")
+    print("--------------- DESCRIPTION IS GENERATED AS ----------------------------")
     print(context_generated)
     generated_code = code_generated_chain.run({'context_generated':context_generated})
-    print("-------------- THE LABEL IS FOUND OUT AS ------------------------------------------------")
+    print("-------------- THE CODE GENERATED IS -----------------------------------")
     print(generated_code)
 
     # Open a file in write mode
