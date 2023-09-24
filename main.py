@@ -14,11 +14,11 @@ def runner_code(question, answer, temperature=0):
         input_variables = ['question', 'answer'], 
         template="""Given the question that a person is asking here -  </> {question} </> with the answer provided by the user here </> {answer}. Given this, you need to provide the thorough description of how will you make the diagram. Make sure that it is a simplistic one, which can be drawn by the python library of graphviz. Do not provide any other context."""
     )
-    
+
 
     code_generator = PromptTemplate(
         input_variables = ['context_generated'], 
-        template="""Given the description of the diagram - {context_generated}, generate a python code using the graphviz library. The code should start like this - from graphviz import Digraph dot = Digraph(comment='image', format='png')'. The code should make sure that the output of the code should be "image.gv". The last line of the code should be dot.render('image.gv')."""
+        template="""Given the description of the diagram - {context_generated}, generate a python code using the graphviz library. MAKE SURE THAT YOU JUST OUTPUT THE CODE, AND NOTHING ELSE. The code should start like this - from graphviz import Digraph dot = Digraph(comment='image', format='png')'. The code should make sure that the output of the code should be "image.gv". The last line of the code should be dot.render('image.gv')."""
     )
 
     # LLM's
