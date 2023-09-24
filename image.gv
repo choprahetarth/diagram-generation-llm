@@ -1,10 +1,10 @@
 // image
 digraph {
-	A [label="Producers (Plants)"]
-	B [label="Primary Consumers"]
-	C [label="Secondary Consumers"]
-	D [label="Tertiary Consumers"]
-	A -> B
-	B -> C
-	C -> D
+	A [label=Plants color=green shape=ellipse]
+	B [label=Herbivores color=yellow shape=rectangle]
+	A -> B [arrowhead=vee]
+	C [label=Carnivores color=orange shape=rectangle]
+	B -> C [arrowhead=vee]
+	D [label="Apex Predators" color=red shape=rectangle]
+	C -> D [arrowhead=vee]
 }

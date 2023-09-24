@@ -5,5 +5,4 @@ openai
 pydot
 plotly
 streamlit_tags
-streamlit_agraph
-pygraphviz 
+streamlit_agraph 
