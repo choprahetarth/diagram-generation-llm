@@ -1,0 +1,17 @@
+// image
+digraph {
+	line [label="" shape=plaintext]
+	sun [label="Sun/Plant" shape=circle]
+	herbivore [label=Herbivore shape=circle]
+	sun -> herbivore
+	carnivore [label=Carnivore shape=circle]
+	herbivore -> carnivore
+	consumer [label=Consumer shape=circle]
+	carnivore -> consumer
+	top_predator [label="Top Predator" shape=circle]
+	consumer -> top_predator
+	omnivore [label=Omnivore shape=circle]
+	herbivore -> omnivore
+	title [label="Food Chain" shape=plaintext]
+	title -> sun
+}
